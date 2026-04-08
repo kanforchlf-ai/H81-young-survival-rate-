@@ -67,6 +67,27 @@
   .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
   .filter-btn { padding: 6px 16px; border: 1.5px solid #d0d6e8; border-radius: 20px; background: #fff; cursor: pointer; font-size: 0.85rem; transition: all .15s; }
   .filter-btn.active { background: #1a2340; color: #fff; border-color: #1a2340; }
+
+  /* ── Tooltip ── */
+  .tip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #94a3b8; color: #fff; font-size: 9px; font-weight: 700;
+    cursor: help; position: relative; margin-left: 4px;
+    vertical-align: middle; flex-shrink: 0; font-style: normal;
+  }
+  .tip::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%);
+    background: #1e293b; color: #f1f5f9; font-size: 0.78rem; font-weight: 400;
+    padding: 9px 13px; border-radius: 7px; width: 230px; line-height: 1.55;
+    white-space: normal; text-align: left; z-index: 200;
+    display: none; pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  }
+  .tip:hover::after { display: block; }
+  .tip-left::after  { left: 0; transform: none; }
+  .tip-right::after { left: auto; right: 0; transform: none; }
 </style>
 </head>
 <body>
@@ -96,33 +117,33 @@
 
   <!-- Summary cards -->
   <div class="stats-row">
-    <div class="stat-card"><div class="num">39</div><div class="label">曾穩定出席（13週≥50%）</div></div>
-    <div class="stat-card"><div class="num danger">10.3%</div><div class="label">第 1 週就流失（week 1 流失）</div></div>
-    <div class="stat-card"><div class="num warn">84.6%</div><div class="label">全體 8 週存活率</div></div>
-    <div class="stat-card"><div class="num ok">34 人</div><div class="label">目前仍活躍（近 8 週有出席）</div></div>
-    <div class="stat-card"><div class="num ok">7 人</div><div class="label">從未觸發連續 4 週缺席</div></div>
+    <div class="stat-card"><div class="num">39</div><div class="label">曾穩定出席（13週≥50%）<i class="tip" data-tip="篩選條件：在任意連續13週內，出席率≥50%（即至少7週出席），且有年級資料。已排除外地唸書3人（謝全真、林承楷、王晨薰）。">?</i></div></div>
+    <div class="stat-card"><div class="num danger">10.3%</div><div class="label">第 1 週就流失<i class="tip" data-tip="首次出席後，緊接著連續4週缺席。代表初次接觸後幾乎立即中斷，從未建立穩定習慣。39人中有4人屬此情況。">?</i></div></div>
+    <div class="stat-card"><div class="num warn">84.6%</div><div class="label">全體 8 週存活率<i class="tip" data-tip="加入後第8週時，尚未觸發「連續4週缺席」的人數÷總人數。衡量最初2個月的留存狀況。此後仍可能流失。">?</i></div></div>
+    <div class="stat-card"><div class="num ok">34 人</div><div class="label">目前仍活躍<i class="tip tip-right" data-tip="近8週（約2個月）內有出席記錄，代表目前仍與教會保持聯繫。即使曾有流失事件，只要近期仍來就算活躍。">?</i></div></div>
+    <div class="stat-card"><div class="num ok">7 人</div><div class="label">從未觸發連續 4 週缺席<i class="tip tip-right" data-tip="整個追蹤期間（最長4年）從未出現連續4週都缺席的狀況，是出席習慣最穩定的核心成員。">?</i></div></div>
   </div>
 
   <!-- 各年梯次卡片 -->
   <div class="cohort-grid">
     <div class="cohort-card" style="border-color:#3d6afc">
       <div style="font-weight:700;font-size:1.05rem;color:#3d6afc;margin-bottom:10px">2022年加入（34人）</div>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失</span><br><strong style="font-size:1.3rem">3人（9%）</strong></div><div><span style="color:#666">8週存活率</span><br><strong style="font-size:1.3rem;color:#2563eb">85.3%</strong></div><div><span style="color:#666">52週存活率</span><br><strong style="font-size:1.3rem;color:#2563eb">70.6%</strong></div><div><span style="color:#666">從未流失</span><br><strong style="font-size:1.3rem;color:#059669">6人</strong></div></div></div></div></div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失<i class="tip" data-tip="首次出席後立刻連續4週缺席，幾乎沒有機會建立習慣。">?</i></span><br><strong style="font-size:1.3rem">3人（9%）</strong></div><div><span style="color:#666">8週存活率<i class="tip" data-tip="加入後第8週（約2個月）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#2563eb">85.3%</strong></div><div><span style="color:#666">52週存活率<i class="tip" data-tip="加入後第52週（約1年）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#2563eb">70.6%</strong></div><div><span style="color:#666">從未流失<i class="tip tip-right" data-tip="整個追蹤期間從未連續缺席4週，出席習慣最穩定。">?</i></span><br><strong style="font-size:1.3rem;color:#059669">6人</strong></div></div></div></div></div>
       </div>
     </div>
     <div class="cohort-card" style="border-color:#ff6b35">
       <div style="font-weight:700;font-size:1.05rem;color:#ff6b35;margin-bottom:10px">2023年加入（1人）</div>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失</span><br><strong style="font-size:1.3rem">0人（0%）</strong></div><div><span style="color:#666">8週存活率</span><br><strong style="font-size:1.3rem;color:#2563eb">100.0%</strong></div><div><span style="color:#666">52週存活率</span><br><strong style="font-size:1.3rem;color:#dc2626">0.0%</strong></div><div><span style="color:#666">從未流失</span><br><strong style="font-size:1.3rem;color:#dc2626">0人</strong></div></div></div></div></div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失<i class="tip" data-tip="首次出席後立刻連續4週缺席，幾乎沒有機會建立習慣。">?</i></span><br><strong style="font-size:1.3rem">0人（0%）</strong></div><div><span style="color:#666">8週存活率<i class="tip" data-tip="加入後第8週（約2個月）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#2563eb">100.0%</strong></div><div><span style="color:#666">52週存活率<i class="tip" data-tip="加入後第52週（約1年）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#dc2626">0.0%</strong></div><div><span style="color:#666">從未流失<i class="tip tip-right" data-tip="整個追蹤期間從未連續缺席4週，出席習慣最穩定。">?</i></span><br><strong style="font-size:1.3rem;color:#dc2626">0人</strong></div></div></div></div></div>
       </div>
     </div>
     <div class="cohort-card" style="border-color:#f59e0b">
       <div style="font-weight:700;font-size:1.05rem;color:#d97706;margin-bottom:10px">2024年加入（3人）</div>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失</span><br><strong style="font-size:1.3rem">1人（33%）</strong></div><div><span style="color:#666">8週存活率</span><br><strong style="font-size:1.3rem;color:#ea580c">66.7%</strong></div><div><span style="color:#666">52週存活率</span><br><strong style="font-size:1.3rem;color:#dc2626">0.0%</strong></div><div><span style="color:#666">從未流失</span><br><strong style="font-size:1.3rem;color:#dc2626">0人</strong></div></div></div></div></div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失<i class="tip" data-tip="首次出席後立刻連續4週缺席，幾乎沒有機會建立習慣。">?</i></span><br><strong style="font-size:1.3rem">1人（33%）</strong></div><div><span style="color:#666">8週存活率<i class="tip" data-tip="加入後第8週（約2個月）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#ea580c">66.7%</strong></div><div><span style="color:#666">52週存活率<i class="tip" data-tip="加入後第52週（約1年）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#dc2626">0.0%</strong></div><div><span style="color:#666">從未流失<i class="tip tip-right" data-tip="整個追蹤期間從未連續缺席4週，出席習慣最穩定。">?</i></span><br><strong style="font-size:1.3rem;color:#dc2626">0人</strong></div></div></div></div></div>
       </div>
     </div>
     <div class="cohort-card" style="border-color:#10b981">
       <div style="font-weight:700;font-size:1.05rem;color:#059669;margin-bottom:10px">2025年加入（1人）</div>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失</span><br><strong style="font-size:1.3rem">0人（0%）</strong></div><div><span style="color:#666">8週存活率</span><br><strong style="font-size:1.3rem;color:#2563eb">100.0%</strong></div><div><span style="color:#666">52週存活率</span><br><strong style="font-size:1.3rem;color:#dc2626">—（資料不足）</strong></div><div><span style="color:#666">從未流失</span><br><strong style="font-size:1.3rem;color:#059669">1人</strong></div></div></div></div></div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.88rem;"><div><span style="color:#666">第1週流失<i class="tip" data-tip="首次出席後立刻連續4週缺席，幾乎沒有機會建立習慣。">?</i></span><br><strong style="font-size:1.3rem">0人（0%）</strong></div><div><span style="color:#666">8週存活率<i class="tip" data-tip="加入後第8週（約2個月）時，仍未觸發連續4週缺席的比例。">?</i></span><br><strong style="font-size:1.3rem;color:#2563eb">100.0%</strong></div><div><span style="color:#666">52週存活率<i class="tip" data-tip="加入後第52週（約1年）時，仍未觸發連續4週缺席的比例。資料未滿52週者顯示「—」。">?</i></span><br><strong style="font-size:1.3rem;color:#dc2626">—（資料不足）</strong></div><div><span style="color:#666">從未流失<i class="tip tip-right" data-tip="整個追蹤期間從未連續缺席4週，出席習慣最穩定。">?</i></span><br><strong style="font-size:1.3rem;color:#059669">1人</strong></div></div></div></div></div>
       </div>
     </div>
   </div>
@@ -164,7 +185,7 @@
     <div id="survivorFilters" class="filters"></div>
     <table>
       <thead>
-        <tr><th>姓名</th><th>小區</th><th>加入年</th><th>出席率（前52週）</th><th>月均出席趨勢</th><th>流失狀態</th></tr>
+        <tr><th>姓名</th><th>小區</th><th>加入年</th><th>出席率（前52週）<i class="tip" data-tip="以加入後前52週（約一年）的出席次數計算。若加入未滿52週，以實際有資料的週數為分母。非整體歷史出席率。">?</i></th><th>月均出席趨勢<i class="tip" data-tip="加入後每4週一組的出席率（最多15組），由左到右為時間順序。綠=75%以上，藍=50–74%，橘=有出席但不足50%，灰=全缺席。可看出出席習慣是否隨時間下滑。">?</i></th><th>流失狀態<i class="tip tip-right" data-tip="🟢從未流失：整個追蹤期從未連續4週缺席｜🟠第X週後回穩：曾觸發但近半年出席率≥25%｜🔵第X週流失：超過52週才首次觸發｜🔴第X週流失：較早觸發且近半年出席率低">?</i></th></tr>
       </thead>
       <tbody id="survivorTable"></tbody>
     </table>
@@ -180,7 +201,7 @@
     <div class="filters" id="detailFilters"></div>
     <table>
       <thead>
-        <tr><th>姓名</th><th>小區</th><th>加入年</th><th>首次出席</th><th>出席率</th><th>流失狀態</th></tr>
+        <tr><th>姓名</th><th>小區</th><th>加入年</th><th>首次出席</th><th>出席率<i class="tip" data-tip="加入後前52週的出席比例（不足52週者以實際週數計）。反映加入初期的穩定程度，不代表目前狀態。">?</i></th><th>流失狀態<i class="tip tip-right" data-tip="🟢從未流失：整個追蹤期從未連續4週缺席｜🟠第X週後回穩：曾觸發但近半年出席率≥25%｜🔴第X週流失：觸發後近半年出席率低於25%">?</i></th></tr>
       </thead>
       <tbody id="detailTable"></tbody>
     </table>
