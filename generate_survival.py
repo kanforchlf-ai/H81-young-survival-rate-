@@ -47,7 +47,7 @@ for r in range(2, ws.nrows):
         except: v = 0
         attend.append(1 if v>=1 else 0)
 
-    if sum(attend) == 0: continue
+    if sum(attend) <= 1: continue   # 排除只來過一次的端值
     first_idx = next((i for i,v in enumerate(attend) if v==1), None)
     if first_idx is None: continue
     first_date = col_dates[first_idx]
