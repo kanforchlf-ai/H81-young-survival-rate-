@@ -279,7 +279,8 @@ function renderTable(grade) {
 }
 
 // Tab buttons
-[['all','全部（78人）'], ...GRADES.map(g => [g,g+'（'+GRADE_DATA[g].n+'人）'])].forEach(([val,label]) => {
+const totalN = GRADES.reduce((s,g)=>s+GRADE_DATA[g].n,0);
+[['all','全部（'+totalN+'人）'], ...GRADES.map(g => [g,g+'（'+GRADE_DATA[g].n+'人）'])].forEach(([val,label]) => {
   const btn = document.createElement('button');
   btn.className = 'tab-btn' + (val==='all'?' active':'');
   btn.textContent = label;
