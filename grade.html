@@ -254,7 +254,7 @@ function renderTable(grade) {
     ? GRADES.flatMap(g => GRADE_DATA[g].members.map(m => ({...m, grade:g})))
     : GRADE_DATA[grade].members.map(m => ({...m, grade}));
 
-  list.sort((a,b) => b.attend_rate - a.attend_rate);
+  list.sort((a,b) => b.recent_rate - a.recent_rate);
   list.forEach(m => {
     const dropped = m.dropout_week !== null;
     const recentColor = m.recent_rate>=50 ? '#059669' : m.recent_rate>=25 ? '#d97706' : '#dc2626';
