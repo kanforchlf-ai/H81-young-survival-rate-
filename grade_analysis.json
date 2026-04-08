@@ -977,7 +977,8 @@
         "attend_rate": 100.0,
         "recent_rate": 26.9,
         "dropout_week": 72,
-        "join_year": "2022"
+        "join_year": "2022",
+        "reason": "外地唸書"
       },
       {
         "name": "高語謙",
@@ -987,15 +988,6 @@
         "recent_rate": 69.2,
         "dropout_week": 209,
         "join_year": "2022"
-      },
-      {
-        "name": "林宗佐",
-        "grade": "大三",
-        "total_weeks": 142,
-        "attend_rate": 55.8,
-        "recent_rate": 3.8,
-        "dropout_week": 25,
-        "join_year": "2023"
       },
       {
         "name": "蔡秉軒",
@@ -1058,7 +1050,8 @@
         "attend_rate": 96.2,
         "recent_rate": 0.0,
         "dropout_week": 74,
-        "join_year": "2022"
+        "join_year": "2022",
+        "reason": "外地唸書"
       },
       {
         "name": "高釩予",
@@ -1124,11 +1117,11 @@
         "join_year": "2023"
       }
     ],
-    "n": 24,
-    "dropped": 23,
+    "n": 23,
+    "dropped": 22,
     "never_dropped": 1,
-    "avg_attend_rate": 53.0,
-    "avg_recent_rate": 20.5,
+    "avg_attend_rate": 52.8,
+    "avg_recent_rate": 21.2,
     "by_join_year": {
       "2022": 14,
       "2023": 6,
@@ -1578,7 +1571,8 @@
         "attend_rate": 88.5,
         "recent_rate": 15.4,
         "dropout_week": 76,
-        "join_year": "2022"
+        "join_year": "2022",
+        "reason": "外地唸書"
       },
       {
         "name": "蔣世傑",
