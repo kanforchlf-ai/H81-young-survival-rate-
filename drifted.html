@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>81 青年區 — 曾穩定但近半年下滑名單</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'PingFang TC','Microsoft JhengHei',sans-serif; background: #f4f6fa; color: #222; }
+  header { background: #1a2340; color: #fff; padding: 24px 32px 18px; }
+  header h1 { font-size: 1.4rem; font-weight: 700; }
+  header p  { margin-top: 6px; font-size: 0.85rem; opacity: 0.7; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  .insight-box { background: #fff8e1; border-left: 4px solid #f59e0b; border-radius: 6px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.9rem; line-height: 1.8; }
+  .insight-box strong { color: #b45309; }
+
+  .stats-row { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat-card { background:#fff; border-radius:10px; padding:16px 22px; flex:1; min-width:140px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  .stat-card .num   { font-size:1.9rem; font-weight:700; }
+  .stat-card .label { font-size:0.78rem; color:#888; margin-top:4px; }
+
+  .card { background:#fff; border-radius:10px; padding:24px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  .card h2 { font-size:1rem; font-weight:700; margin-bottom:4px; color:#1a2340; border-left:4px solid #3d6afc; padding-left:10px; }
+  .card .subtitle { font-size:0.78rem; color:#888; margin-bottom:16px; padding-left:14px; }
+
+  .urgency-section { margin-bottom: 28px; }
+  .urgency-title { font-size:.92rem; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+
+  /* heatmap */
+  .heatmap-wrap { overflow-x: auto; }
+  .heatmap { border-collapse: collapse; font-size: 0.75rem; min-width: 700px; }
+  .heatmap th { padding: 4px 6px; text-align: left; font-weight: 600; color: #555; white-space: nowrap; }
+  .heatmap td.name-cell { padding: 4px 10px 4px 4px; font-weight: 600; white-space: nowrap; font-size:.8rem; }
+  .heatmap td.cell { width: 14px; height: 22px; border: 1px solid rgba(255,255,255,.4); cursor: default; }
+  .heatmap td.cell:hover { outline: 2px solid #1a2340; z-index:1; position:relative; }
+  .heatmap tr:hover td.name-cell { color: #3d6afc; }
+
+  .legend-bar { display: flex; gap: 4px; align-items: center; margin-bottom: 14px; font-size: .78rem; }
+  .legend-swatch { width: 24px; height: 14px; border-radius: 2px; }
+
+  /* detail table */
+  table.detail { width:100%; border-collapse:collapse; font-size:.85rem; }
+  table.detail thead tr { background:#f0f3fa; }
+  table.detail th { padding:9px 12px; text-align:left; font-weight:600; color:#555; border-bottom:2px solid #e0e5f0; }
+  table.detail td { padding:8px 12px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+  table.detail tr:hover td { background:#f8f9ff; }
+  .pct-bar { display:flex; align-items:center; gap:8px; }
+  .bar-bg   { flex:1; height:7px; background:#eee; border-radius:4px; overflow:hidden; min-width:50px; }
+  .bar-fill { height:100%; border-radius:4px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.72rem; font-weight:600; }
+  .badge-urgent { background:#fee2e2; color:#991b1b; }
+  .badge-mid    { background:#fff3cd; color:#856404; }
+  .badge-cold   { background:#e0e7ff; color:#3730a3; }
+
+  .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .filter-btn { padding:5px 14px; border:1.5px solid #d0d6e8; border-radius:20px; background:#fff; cursor:pointer; font-size:.82rem; transition:all .15s; }
+  .filter-btn.active { background:#1a2340; color:#fff; border-color:#1a2340; }
+
+  a.back { display:inline-block; margin-bottom:18px; color:#3d6afc; font-size:.87rem; text-decoration:none; }
+  a.back:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>曾穩定但近半年下滑 — 青年大區大專</h1>
+  <p>篩選條件：曾有任何一年出席率 ≥ 50%，且近 26 週（半年）出席率 &lt; 50%　｜　共 21 人</p>
+</header>
+
+<div class="container">
+<a class="back" href="index.html">← 返回存活率分析</a>
+
+<div class="insight-box">
+  這 21 人過去曾是<strong>穩定出席的核心成員</strong>，但近半年出現明顯下滑。<br>
+  依「最後穩定月」（最後一個月均出席率 ≥ 50% 的月份）分為三個緊急程度：<br>
+  &nbsp;&nbsp;<strong style="color:#dc2626">最近才下滑（月份 ≥ 46）</strong>：仍有較高機會追回，需立即牧養關懷<br>
+  &nbsp;&nbsp;<strong style="color:#d97706">中期下滑（月份 30–45）</strong>：已離開 1–1.5 年，需主動聯繫<br>
+  &nbsp;&nbsp;<strong style="color:#6366f1">長期下滑（月份 &lt; 30）</strong>：已離開 2 年以上
+</div>
+
+<div class="stats-row">
+  <div class="stat-card"><div class="num" style="color:#dc2626">11人</div><div class="label">最近才下滑（≤ 6 個月）</div></div>
+  <div class="stat-card"><div class="num" style="color:#d97706">5人</div><div class="label">中期下滑（6–18 個月）</div></div>
+  <div class="stat-card"><div class="num" style="color:#6366f1">5人</div><div class="label">長期下滑（18 個月以上）</div></div>
+  <div class="stat-card"><div class="num" style="color:#1a2340">21人</div><div class="label">曾最佳年出席率平均 87%</div></div>
+</div>
+
+<!-- Heatmap -->
+<div class="card">
+  <h2>月均出席率熱力圖</h2>
+  <p class="subtitle">每格 = 4 週月均出席率。左側從 2022年4月 起，共約 54 個月。深綠=100%，淺黃=25–50%，紅=0%，灰=無資料</p>
+  <div class="legend-bar">
+    <span>出席率：</span>
+    <div class="legend-swatch" style="background:#166534"></div><span>100%</span>
+    <div class="legend-swatch" style="background:#4ade80"></div><span>75%</span>
+    <div class="legend-swatch" style="background:#fde047"></div><span>50%</span>
+    <div class="legend-swatch" style="background:#fb923c"></div><span>25%</span>
+    <div class="legend-swatch" style="background:#dc2626"></div><span>0%</span>
+    <div class="legend-swatch" style="background:#e5e7eb"></div><span>無資料</span>
+  </div>
+  <div class="heatmap-wrap"><table class="heatmap" id="heatmap"></table></div>
+</div>
+
+<!-- Line chart -->
+<div class="card">
+  <h2>月均出席率趨勢折線圖</h2>
+  <p class="subtitle">可點選右側圖例隱藏個別成員</p>
+  <div style="position:relative;height:420px"><canvas id="chartLines"></canvas></div>
+</div>
+
+<!-- Detail table -->
+<div class="card">
+  <h2>個人明細</h2>
+  <div class="filters" id="filterBtns"></div>
+  <table class="detail">
+    <thead>
+      <tr><th>姓名</th><th>小區</th><th>曾最佳年出席率</th><th>近半年出席率</th><th>最後穩定月</th><th>緊急程度</th></tr>
+    </thead>
+    <tbody id="detailBody"></tbody>
+  </table>
+</div>
+
+</div>
+
+<script>
+const MEMBERS = [
+  {"姓名":"謝全真","小區":"青年三區","近半年出席率":26.9,"曾最佳年出席率":100.0,"最佳年起":"2022-04","總出席":89,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,25,25,0],"下滑前最後穩定月":51},
+  {"姓名":"郭家馨","小區":"青年一區","近半年出席率":0.0,"曾最佳年出席率":100.0,"最佳年起":"2022-04","總出席":92,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":27},
+  {"姓名":"周品瑜","小區":"青年三區","近半年出席率":0.0,"曾最佳年出席率":100.0,"最佳年起":"2022-04","總出席":117,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,75,50,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":33},
+  {"姓名":"管錫廷","小區":"青年三區","近半年出席率":0.0,"曾最佳年出席率":100.0,"最佳年起":"2022-04","總出席":144,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,25,0,0,0,0,0,0,0,0],"下滑前最後穩定月":44},
+  {"姓名":"徐靖城","小區":"青年三區","近半年出席率":11.5,"曾最佳年出席率":98.1,"最佳年起":"2022-04","總出席":158,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,25,0,25,0,0,0],"下滑前最後穩定月":51},
+  {"姓名":"裴廷瑋","小區":"青年一區","近半年出席率":0.0,"曾最佳年出席率":98.1,"最佳年起":"2022-04","總出席":77,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":21},
+  {"姓名":"江至美","小區":"青年三區","近半年出席率":38.5,"曾最佳年出席率":98.1,"最佳年起":"2022-07","總出席":144,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,100,100,100,100,100,75,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,25,25],"下滑前最後穩定月":52},
+  {"姓名":"林承楷","小區":"青年三區","近半年出席率":0.0,"曾最佳年出席率":98.1,"最佳年起":"2022-07","總出席":68,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":17},
+  {"姓名":"何語心","小區":"青年三區","近半年出席率":7.7,"曾最佳年出席率":96.2,"最佳年起":"2022-04","總出席":151,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,25,25,25,0,0,0,0,0],"下滑前最後穩定月":45},
+  {"姓名":"江漢維","小區":"青年二區","近半年出席率":0.0,"曾最佳年出席率":96.2,"最佳年起":"2023-04","總出席":155,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,100,75,100,100,100,100,100,75,100,75,75,75,75,75,75,50,0,0,0,0,0,0,0],"下滑前最後穩定月":46},
+  {"姓名":"王晨薰","小區":"青年三區","近半年出席率":15.4,"曾最佳年出席率":96.2,"最佳年起":"2022-06","總出席":109,"首次出席":"2022-04","月均出席率":[100,100,100,75,100,100,100,100,75,75,50,75,50,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,100,75,100,75,75,75,75,75,75,75,75,75,100,75,75,50,25,25,25,0,0,0,25,0],"下滑前最後穩定月":45},
+  {"姓名":"江漢翔","小區":"青年二區","近半年出席率":3.8,"曾最佳年出席率":94.2,"最佳年起":"2023-10","總出席":152,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,100,75,75,100,75,75,100,75,75,75,50,50,0,0,0,0,0],"下滑前最後穩定月":47},
+  {"姓名":"王麒竣","小區":"青年三區","近半年出席率":30.8,"曾最佳年出席率":88.5,"最佳年起":"2022-04","總出席":131,"首次出席":"2022-04","月均出席率":[100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,75,75,75,75,75,50,50,50,50,50,50,50,50,25,25,25,25],"下滑前最後穩定月":52},
+  {"姓名":"高瑞謙","小區":"青年三區","近半年出席率":30.8,"曾最佳年出席率":86.5,"最佳年起":"2022-08","總出席":116,"首次出席":"2022-04","月均出席率":[75,100,100,75,100,75,100,75,75,75,75,75,75,100,100,100,75,100,75,75,100,100,100,100,100,100,100,75,100,100,100,100,75,100,75,100,100,100,100,100,75,75,75,75,75,75,75,75,75,50,50,50,25,25],"下滑前最後穩定月":52},
+  {"姓名":"盧昱廷","小區":"青年一區","近半年出席率":0.0,"曾最佳年出席率":75.0,"最佳年起":"2022-04","總出席":39,"首次出席":"2022-04","月均出席率":[75,75,75,100,75,75,100,75,75,75,50,25,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":10},
+  {"姓名":"高釩予","小區":"青年三區","近半年出席率":0.0,"曾最佳年出席率":73.1,"最佳年起":"2022-05","總出席":48,"首次出席":"2022-04","月均出席率":[75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,50,50,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":19},
+  {"姓名":"蔡雨芝","小區":"青年一區","近半年出席率":0.0,"曾最佳年出席率":69.2,"最佳年起":"2023-06","總出席":67,"首次出席":"2022-04","月均出席率":[75,75,75,75,75,75,75,75,50,50,75,75,75,75,75,75,75,75,75,75,50,50,50,50,50,75,75,75,75,50,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":29},
+  {"姓名":"呂全恩","小區":"青年二區","近半年出席率":7.7,"曾最佳年出席率":67.3,"最佳年起":"2022-07","總出席":90,"首次出席":"2022-04","月均出席率":[75,100,75,100,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,50,50,50,50,50,75,75,75,50,75,75,75,75,50,50,50,50,50,50,50,50,50,50,75,50,0,25,0,0,0,0],"下滑前最後穩定月":42},
+  {"姓名":"高聖華","小區":"青年二區","近半年出席率":34.6,"曾最佳年出席率":57.7,"最佳年起":"2024-09","總出席":82,"首次出席":"2022-04","月均出席率":[75,75,25,50,50,25,25,50,50,25,25,25,50,50,75,50,50,50,50,50,25,25,25,50,50,25,25,25,50,50,50,75,50,75,75,75,75,75,75,75,75,75,75,75,75,75,50,25,25,25,0,0,0,25],"下滑前最後穩定月":46},
+  {"姓名":"林宗佐","小區":"青年三區","近半年出席率":3.8,"曾最佳年出席率":55.8,"最佳年起":"2023-08","總出席":31,"首次出席":"2023-08","月均出席率":[75,100,100,100,100,100,25,0,0,25,50,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25],"下滑前最後穩定月":11},
+  {"姓名":"林沛均","小區":"青年一區","近半年出席率":0.0,"曾最佳年出席率":53.8,"最佳年起":"2022-07","總出席":63,"首次出席":"2022-04","月均出席率":[75,75,50,75,75,75,50,75,75,75,75,75,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,25,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"下滑前最後穩定月":30}
+];
+
+// ── 緊急程度分類 ──────────────────────────────────────────────────────────────
+// 月份換算：月份1=2022年4月，月份13=2023年4月，月份25=2024年4月，月份37=2025年4月，月份49=2026年4月
+// 月份 ≥ 46 ≈ 2026年1月後才下滑 → 緊急
+// 月份 30–45 ≈ 2024年7月–2025年12月 → 中期
+// 月份 < 30 → 長期
+function urgency(m) {
+  const mo = m['下滑前最後穩定月'];
+  if (mo === null) return 'cold';
+  if (mo >= 46) return 'urgent';
+  if (mo >= 30) return 'mid';
+  return 'cold';
+}
+function urgencyLabel(u) {
+  return u==='urgent' ? '緊急追蹤' : u==='mid' ? '主動聯繫' : '長期離開';
+}
+function urgencyColor(u) {
+  return u==='urgent' ? '#dc2626' : u==='mid' ? '#d97706' : '#6366f1';
+}
+
+// ── Heatmap ───────────────────────────────────────────────────────────────────
+function rateColor(r) {
+  if (r === null || r === undefined) return '#e5e7eb';
+  if (r >= 100) return '#166534';
+  if (r >= 75)  return '#16a34a';
+  if (r >= 50)  return '#86efac';
+  if (r >= 25)  return '#fde047';
+  if (r > 0)    return '#fb923c';
+  return '#dc2626';
+}
+
+const MAX_MONTHS = Math.max(...MEMBERS.map(m => m['月均出席率'].length));
+// Month labels: month 1 = 2022-04
+function monthLabel(i) {
+  const totalMonths = i; // 0-indexed
+  const baseYear = 2022, baseMo = 4;
+  const absMonth = baseMo - 1 + totalMonths;
+  const yr = baseYear + Math.floor(absMonth / 12);
+  const mo = (absMonth % 12) + 1;
+  return `${yr}/${String(mo).padStart(2,'0')}`;
+}
+
+const heatmap = document.getElementById('heatmap');
+// Header row
+let headerHtml = '<tr><th>姓名</th><th>小區</th>';
+for (let i = 0; i < MAX_MONTHS; i++) {
+  if (i % 6 === 0) headerHtml += `<th style="font-size:.65rem;color:#aaa">${monthLabel(i)}</th>`;
+  else headerHtml += '<th></th>';
+}
+headerHtml += '<th style="padding-left:8px">近半年</th><th>最佳年</th></tr>';
+heatmap.innerHTML = headerHtml;
+
+// Urgency sort: urgent first
+const sorted = [...MEMBERS].sort((a,b) => {
+  const order = {urgent:0, mid:1, cold:2};
+  return order[urgency(a)] - order[urgency(b)] || b['曾最佳年出席率'] - a['曾最佳年出席率'];
+});
+
+sorted.forEach(m => {
+  const u = urgency(m);
+  const uColor = urgencyColor(u);
+  let row = `<tr>
+    <td class="name-cell" style="border-left:3px solid ${uColor}">${m['姓名']}</td>
+    <td class="name-cell" style="color:#666">${m['小區'].replace('青年','')}</td>`;
+  for (let i = 0; i < MAX_MONTHS; i++) {
+    const rate = m['月均出席率'][i];
+    const bg = rateColor(rate !== undefined ? rate : null);
+    const tip = rate !== undefined ? `${monthLabel(i)}: ${rate}%` : '';
+    row += `<td class="cell" style="background:${bg}" title="${tip}"></td>`;
+  }
+  row += `<td style="padding-left:8px;font-weight:600;color:${m['近半年出席率']>=25?'#d97706':'#dc2626'};font-size:.82rem">${m['近半年出席率']}%</td>`;
+  row += `<td style="font-weight:600;color:#059669;font-size:.82rem">${m['曾最佳年出席率']}%</td>`;
+  row += '</tr>';
+  heatmap.innerHTML += row;
+});
+
+// ── 折線圖 ────────────────────────────────────────────────────────────────────
+const LINE_COLORS = [
+  '#dc2626','#ea580c','#d97706','#ca8a04','#65a30d','#16a34a','#0891b2','#2563eb','#7c3aed','#be185d',
+  '#991b1b','#9a3412','#92400e','#3f6212','#065f46','#0e7490','#1e40af','#5b21b6','#9d174d','#374151','#6b7280'
+];
+
+const monthLabelsArr = Array.from({length: MAX_MONTHS}, (_, i) => monthLabel(i));
+new Chart(document.getElementById('chartLines'), {
+  type: 'line',
+  data: {
+    labels: monthLabelsArr,
+    datasets: sorted.map((m, i) => ({
+      label: m['姓名'],
+      data: Array.from({length: MAX_MONTHS}, (_, j) =>
+        j < m['月均出席率'].length ? m['月均出席率'][j] : null
+      ),
+      borderColor: LINE_COLORS[i % LINE_COLORS.length],
+      backgroundColor: 'transparent',
+      borderWidth: 1.5,
+      pointRadius: 0,
+      tension: 0.3,
+      spanGaps: false,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { ticks: { maxTicksLimit: 12, font:{size:10} } },
+      y: { min:0, max:105, ticks:{callback:v=>v+'%'} }
+    },
+    plugins: {
+      legend: { position:'right', labels:{font:{size:10}, boxWidth:12, padding:8} },
+      tooltip: { callbacks: { label: i=>`${i.dataset.label}: ${i.parsed.y}%` } }
+    }
+  }
+});
+
+// ── 明細表格 ──────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+const filters = [
+  ['all','全部（21人）'],
+  ['urgent','緊急追蹤（11人）'],
+  ['mid','主動聯繫（5人）'],
+  ['cold','長期離開（5人）'],
+];
+const filterWrap = document.getElementById('filterBtns');
+filters.forEach(([val,label]) => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn' + (val==='all'?' active':'');
+  btn.textContent = label;
+  btn.onclick = () => {
+    activeFilter = val;
+    filterWrap.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+  };
+  filterWrap.appendChild(btn);
+});
+
+function renderTable() {
+  const filtered = activeFilter==='all' ? MEMBERS : MEMBERS.filter(m=>urgency(m)===activeFilter);
+  const rows = [...filtered].sort((a,b) => {
+    const order={urgent:0,mid:1,cold:2};
+    return order[urgency(a)]-order[urgency(b)] || b['曾最佳年出席率']-a['曾最佳年出席率'];
+  });
+  const tbody = document.getElementById('detailBody');
+  tbody.innerHTML = rows.map(m => {
+    const u = urgency(m);
+    const uColor = urgencyColor(u);
+    const pr = m['近半年出席率'];
+    const pb = m['曾最佳年出席率'];
+    const prColor = pr>=25?'#d97706':'#dc2626';
+    const mo = m['下滑前最後穩定月'];
+    // Convert month to year-month label
+    const lastStableLabel = mo ? monthLabel(mo-1) : '—';
+    return `<tr>
+      <td><strong>${m['姓名']}</strong></td>
+      <td>${m['小區']}</td>
+      <td>
+        <div class="pct-bar">
+          <div class="bar-bg"><div class="bar-fill" style="width:${pb}%;background:#059669"></div></div>
+          <span style="min-width:38px;font-weight:600;color:#059669">${pb}%</span>
+        </div>
+      </td>
+      <td>
+        <div class="pct-bar">
+          <div class="bar-bg"><div class="bar-fill" style="width:${pr}%;background:${prColor}"></div></div>
+          <span style="min-width:38px;font-weight:600;color:${prColor}">${pr}%</span>
+        </div>
+      </td>
+      <td style="color:#555;font-size:.82rem">${lastStableLabel}</td>
+      <td><span class="badge badge-${u==='urgent'?'urgent':u==='mid'?'mid':'cold'}">${urgencyLabel(u)}</span></td>
+    </tr>`;
+  }).join('');
+}
+renderTable();
+</script>
+</body>
+</html>
