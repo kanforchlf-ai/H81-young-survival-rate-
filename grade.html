@@ -47,6 +47,9 @@ table.mtbl th { background:#f8fafc; padding:8px 10px; text-align:left; font-weig
 table.mtbl td { padding:7px 10px; border-bottom:1px solid #f0f0f0; }
 table.mtbl tr:hover td { background:#f8fafc; }
 .badge { display:inline-block; padding:2px 9px; border-radius:10px; font-size:.72rem; font-weight:700; }
+.badge-alive  { background:#d1fae5; color:#065f46; }
+.badge-return { background:#fff7ed; color:#9a3412; border:1.5px solid #fb923c; }
+.badge-drop   { background:#fee2e2; color:#991b1b; }
 .rate-bar { display:flex; align-items:center; gap:6px; }
 .rate-track { width:80px; height:7px; background:#e5e7eb; border-radius:4px; overflow:hidden; flex-shrink:0; }
 .rate-fill { height:100%; border-radius:4px; }
@@ -292,10 +295,13 @@ function renderTable(grade) {
         </div>
       </td>
       <td style="color:${recentColor};font-weight:700">${m.recent_rate}%</td>
-      <td>
-        <span class="dot-drop" style="background:${dropped?'#dc2626':'#10b981'}"></span>
-        ${dropped ? '第'+m.dropout_week+'週流失' : '從未流失'}
-      </td>`;
+      <td>${
+        !dropped
+          ? '<span class="badge badge-alive">從未流失</span>'
+          : m.recent_rate >= 25
+            ? `<span class="badge badge-return">第${m.dropout_week}週後回穩 ↩</span>`
+            : `<span class="badge badge-drop">第${m.dropout_week}週流失</span>`
+      }</td>`;
     tbody.appendChild(tr);
   });
 }
