@@ -59,6 +59,13 @@ table.mtbl tr:hover td { background:#f8fafc; }
 .cb-track { flex:1; height:22px; background:#f0f0f0; border-radius:4px; display:flex; overflow:hidden; }
 .cb-seg { height:100%; display:flex; align-items:center; justify-content:center; font-size:.68rem; color:#fff; font-weight:700; min-width:0; }
 
+/* ── Tooltip ── */
+  .tip { display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#94a3b8;color:#fff;font-size:9px;font-weight:700;cursor:help;position:relative;margin-left:4px;vertical-align:middle;flex-shrink:0;font-style:normal; }
+  .tip::after { content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:#1e293b;color:#f1f5f9;font-size:.78rem;font-weight:400;padding:9px 13px;border-radius:7px;width:230px;line-height:1.55;white-space:normal;text-align:left;z-index:200;display:none;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.25); }
+  .tip:hover::after { display:block; }
+  .tip-left::after { left:0;transform:none; }
+  .tip-right::after { left:auto;right:0;transform:none; }
+
 @media(max-width:700px){
   .grade-cards { grid-template-columns:repeat(2,1fr); }
   .chart-row { grid-template-columns:1fr; }
@@ -79,20 +86,20 @@ table.mtbl tr:hover td { background:#f8fafc; }
   <!-- Charts -->
   <div class="chart-row">
     <div class="chart-box">
-      <h2>存活曲線（各年級）</h2>
+      <h2>存活曲線（各年級）<i class="tip" data-tip="Y軸：仍未觸發「連續4週缺席」的比例。X軸：加入後週數。曲線越平緩代表流失速度越慢，越穩定。每條線只延伸到該年級有資料的最後一週。">?</i></h2>
       <canvas id="survivalChart" height="260"></canvas>
       <div class="half-life-row" id="halfLifeRow"></div>
     </div>
     <div class="chart-box">
-      <h2>出席率分佈（近半年 vs 歷史均值）</h2>
+      <h2>出席率分佈（近半年 vs 歷史均值）<i class="tip tip-right" data-tip="深色柱：加入後前52週的出席率均值（歷史）。淺色柱：近半年出席率均值（現況）。兩者差距大表示整體出席習慣有明顯下滑。">?</i></h2>
       <canvas id="attendChart" height="260"></canvas>
     </div>
   </div>
 
   <!-- Drift ratio -->
   <div class="section">
-    <h2>各年級出席狀態分佈</h2>
-    <p style="font-size:.78rem;color:#888;margin-bottom:16px;">流失定義：曾有任何52週出席率 ≥50%，但近半年 &lt;50%</p>
+    <h2>各年級出席狀態分佈<i class="tip" data-tip="將每位成員分為三類：穩定中（近半年出席率≥50%）、流失（近半年<50%）、從未穩定（整個追蹤期從未達50%，本分析中為0）。比例越偏向穩定中代表該年級現況越好。">?</i></h2>
+    <p style="font-size:.78rem;color:#888;margin-bottom:16px;">穩定中：近半年出席率≥50%｜流失：近半年出席率&lt;50%（含完全不來）</p>
     <div id="driftBars"></div>
   </div>
 
@@ -103,7 +110,9 @@ table.mtbl tr:hover td { background:#f8fafc; }
     <table class="mtbl">
       <thead><tr>
         <th>年級</th><th>姓名</th><th>加入年</th>
-        <th>歷史出席率</th><th>近半年</th><th>狀態</th>
+        <th>歷史出席率<i class="tip" data-tip="加入後前52週（約一年）的出席比例。不足52週者以實際有資料週數計。反映加入初期穩定程度。">?</i></th>
+        <th>近半年<i class="tip" data-tip="近半年（約26週）出席率。綠色≥50%（穩定）、橘色25–49%（偶爾）、紅色<25%（稀少或不來）。">?</i></th>
+        <th>狀態<i class="tip tip-right" data-tip="從未流失：整個追蹤期從未連續4週缺席。第X週流失：首次觸發連續4週缺席的時間點（不代表此後完全不來）。">?</i></th>
       </tr></thead>
       <tbody id="memberTbody"></tbody>
     </table>
@@ -128,11 +137,19 @@ GRADES.forEach(g => {
   card.innerHTML = `
     <div class="grade-label" style="color:${COLORS[g]}">${g}（${d.n} 人）</div>
     <div class="big-num" style="color:${COLORS[g]}">${d.avg_attend_rate}%</div>
-    <div style="font-size:.7rem;color:#999;margin-top:2px;">歷史均出席率</div>
+    <div style="font-size:.7rem;color:#999;margin-top:2px;">歷史均出席率
+      <i class="tip" data-tip="加入後前52週（約一年）的出席率年級平均值。反映加入初期穩定程度，非整個追蹤期的總出席率。">?</i>
+    </div>
     <div class="sub-row">
-      <span><b style="color:${COLORS[g]}">${d.avg_recent_rate}%</b>近半年均</span>
-      <span><b>${d.never_dropped}/${d.n}</b>從未流失</span>
-      <span><b>${Math.round(d.survival_curve.find(p=>p.pct<=50)?.week ?? 999)}週</b>半衰期</span>
+      <span><b style="color:${COLORS[g]}">${d.avg_recent_rate}%</b> 近半年均
+        <i class="tip" data-tip="近半年（約26週）出席率的年級平均值，反映目前整體活躍程度。">?</i>
+      </span>
+      <span><b>${d.never_dropped}/${d.n}</b> 從未流失
+        <i class="tip" data-tip="整個追蹤期從未連續4週缺席的人數，這些人出席習慣最穩定。">?</i>
+      </span>
+      <span><b>${Math.round(d.survival_curve.find(p=>p.pct<=50)?.week ?? 999)}週</b> 半衰期
+        <i class="tip tip-right" data-tip="存活率首次降到50%時的週數，即一半成員已觸發「連續4週缺席」的時間點。數字越大代表整體越穩定。">?</i>
+      </span>
     </div>`;
   cardsEl.appendChild(card);
 });
