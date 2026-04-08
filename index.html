@@ -115,6 +115,15 @@
     2022 年梯次（34人）8週存活率 <strong>85.3%</strong>，52週存活率 <strong>70.6%</strong>；全體 52 週存活率 <strong>63.2%</strong>，104 週 <strong>50.0%</strong>；2023/2024 梯次在 52 週後<strong>全數流失（0%）</strong>。
   </div>
 
+  <!-- Current status overview -->
+  <div id="status-overview" style="background:#fff;border-radius:10px;padding:20px 24px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.08);">
+    <div style="font-size:.95rem;font-weight:700;color:#1a2340;border-left:4px solid #3d6afc;padding-left:10px;margin-bottom:14px;">
+      39 人的「現況」<i class="tip" data-tip="以近半年出席率（recent_rate）衡量目前狀態：仍穩定 ≥ 50%、偶爾出席 25–49%、已流失 < 25%。無論過去有無觸發流失事件，現況以最近半年實際出席率判斷。">?</i>
+    </div>
+    <div id="status-bar" style="display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:12px;"></div>
+    <div id="status-legend" style="display:flex;gap:20px;flex-wrap:wrap;font-size:.85rem;"></div>
+  </div>
+
   <!-- Summary cards -->
   <div class="stats-row">
     <div class="stat-card"><div class="num">39</div><div class="label">曾穩定出席（13週≥50%）<i class="tip" data-tip="納入條件（Option C）：① 青年大區大專成員 ② 在任意連續13週內，出席次數≥7次（≈出席率54%以上）③ 有年級資料。共 42 人符合，再排除外地唸書3人（謝全真、林承楷、王晨薰），最終分析對象為 39 人。">?</i></div></div>
@@ -363,6 +372,39 @@ function renderSurvivorTable() {
     </tr>`;
   }).join('');
 }
+
+// ── 現況一覽 ──────────────────────────────────────────────────────────────────
+(function renderStatusOverview() {
+  const stable  = MEMBER_LIST.filter(m => (m['recent_rate']||0) >= 50).length;
+  const occasional = MEMBER_LIST.filter(m => (m['recent_rate']||0) >= 25 && (m['recent_rate']||0) < 50).length;
+  const lost    = MEMBER_LIST.filter(m => (m['recent_rate']||0) < 25).length;
+  const total   = MEMBER_LIST.length;
+
+  const segments = [
+    { label:'仍穩定', n: stable,     pct: Math.round(stable/total*100),     color:'#059669', bg:'#d1fae5', tip:'近半年出席率 ≥ 50%，持續穩定參與' },
+    { label:'偶爾出席', n: occasional, pct: Math.round(occasional/total*100), color:'#d97706', bg:'#fef3c7', tip:'近半年出席率 25–49%，出席不規律' },
+    { label:'已流失', n: lost,       pct: Math.round(lost/total*100),        color:'#dc2626', bg:'#fee2e2', tip:'近半年出席率 < 25%，幾乎不再出席' },
+  ];
+
+  const bar = document.getElementById('status-bar');
+  const leg = document.getElementById('status-legend');
+
+  segments.forEach(s => {
+    const seg = document.createElement('div');
+    seg.style.cssText = `width:${s.pct}%;background:${s.color};display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;font-weight:700;min-width:${s.n>0?'36px':'0'};transition:width .3s;`;
+    if (s.n > 0) seg.textContent = s.n + '人';
+    bar.appendChild(seg);
+
+    const item = document.createElement('div');
+    item.style.cssText = `display:flex;align-items:center;gap:8px;`;
+    item.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${s.color};flex-shrink:0;"></span>`
+      + `<span style="color:#444;">${s.label}</span>`
+      + `<strong style="color:${s.color};">${s.n} 人</strong>`
+      + `<span style="color:#aaa;">(${s.pct}%)</span>`
+      + `<i class="tip" data-tip="${s.tip}">?</i>`;
+    leg.appendChild(item);
+  });
+})();
 
 buildSurvivorFilters();
 renderSurvivorTable();
