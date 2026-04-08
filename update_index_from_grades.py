@@ -74,7 +74,13 @@ for y in YEARS:
     }
     print(f"{y}: n={n}, nd={nd}, w1={w1}, 8wk={w8['pct'] if w8 else '-'}%, 52wk={w52['pct'] if w52 else '-'}%")
 
-# MEMBER_LIST（依出席率排序）
+# recent_rate lookup（來自 grade_analysis.json）
+recent_rate_map = {m['name']: m.get('recent_rate', 0)
+                   for g in grade_data.values() for m in g['members']}
+
+# MEMBER_LIST（依出席率排序，加入 recent_rate）
+for m in members_43:
+    m['recent_rate'] = recent_rate_map.get(m['姓名'], 0)
 member_list = sorted(members_43, key=lambda m: -m['出席率'])
 all_members_js = {
     'attend_rate': round(sum(m['出席率'] for m in members_43)/total, 1),
