@@ -1660,15 +1660,33 @@
         "recent_rate": 0.0,
         "dropout_week": 4,
         "join_year": "2022"
+      },
+      {
+        "name": "林沛均",
+        "grade": "大四",
+        "total_weeks": 213,
+        "attend_rate": 44.2,
+        "recent_rate": 0.0,
+        "dropout_week": 12,
+        "join_year": "2022"
+      },
+      {
+        "name": "藍聿昕",
+        "grade": "大四",
+        "total_weeks": 213,
+        "attend_rate": 42.3,
+        "recent_rate": 0.0,
+        "dropout_week": 10,
+        "join_year": "2022"
       }
     ],
-    "n": 22,
-    "dropped": 20,
+    "n": 24,
+    "dropped": 22,
     "never_dropped": 2,
-    "avg_attend_rate": 34.8,
-    "avg_recent_rate": 13.5,
+    "avg_attend_rate": 35.5,
+    "avg_recent_rate": 12.3,
     "by_join_year": {
-      "2022": 15,
+      "2022": 17,
       "2025": 2,
       "2023": 4,
       "2024": 1
