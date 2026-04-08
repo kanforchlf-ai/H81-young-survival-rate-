@@ -240,7 +240,7 @@ GRADES.forEach(g => {
     const cnt = d[label];
     if(!cnt) return;
     const pct = cnt/total*100;
-    segs += `<div style="width:${pct}%;background:${DRIFT_COLORS[label]};height:26px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:${DRIFT_TEXT[label]};min-width:24px;border-radius:2px;" title="${label} ${cnt}人 (${Math.round(pct)}%)">${cnt}人</div>`;
+    segs += `<div style="width:${pct}%;background:${DRIFT_COLORS[label]};height:26px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:${DRIFT_TEXT[label]};min-width:24px;border-radius:2px;" title="${label} ${cnt}人 (${Math.round(pct)}%)">${cnt}人(${Math.round(pct)}%)</div>`;
   });
   row.innerHTML = `<div style="width:32px;font-weight:700;color:${COLORS[g]};flex-shrink:0">${g}</div>
     <div style="flex:1;display:flex;overflow:hidden;border-radius:4px;gap:2px;">${segs}</div>
