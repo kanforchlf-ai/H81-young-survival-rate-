@@ -90,8 +90,9 @@ total_n = 0
 
 for g in grades:
     orig_members = grade_data[g]['members']
-    # 只保留穩定成員
-    filtered = [m for m in orig_members if m['name'] in stable_names]
+    # 只保留穩定成員，排除外地唸書
+    filtered = [m for m in orig_members
+                if m['name'] in stable_names and m.get('reason') != '外地唸書']
 
     n = len(filtered)
     total_n += n

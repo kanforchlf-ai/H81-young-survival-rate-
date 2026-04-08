@@ -10,11 +10,14 @@ with open('survival_data.json') as f:
 with open('grade_analysis.json') as f:
     grade_data = json.load(f)
 
-# 43 人名單（grade_analysis.json 裡所有成員）
+# 有年級資料且排除外地唸書的成員名單
+exclude_outside = {m['name'] for g in grade_data.values() for m in g['members']
+                   if m.get('reason') == '外地唸書'}
 graded_names = {m['name'] for g in grade_data.values() for m in g['members']}
 
-# 從 survival_data.json 篩選出 43 人
-members_43 = [m for m in surv['members'] if m['姓名'] in graded_names]
+# 從 survival_data.json 篩選（排除外地唸書）
+members_43 = [m for m in surv['members']
+              if m['姓名'] in graded_names and m['姓名'] not in exclude_outside]
 print(f"篩選後：{len(members_43)} 人（grade_analysis 共 {len(graded_names)} 人，其中 {len(members_43)} 在 Option C 名單內）")
 
 # ── 存活曲線（照 generate_survival.py 的邏輯）─────────────────
