@@ -47,7 +47,7 @@ for r in range(2, ws.nrows):
         except: v = 0
         attend.append(1 if v>=1 else 0)
 
-    if sum(attend) <= 1: continue   # 排除只來過一次的端值
+    if sum(attend) == 0: continue
     first_idx = next((i for i,v in enumerate(attend) if v==1), None)
     if first_idx is None: continue
     first_date = col_dates[first_idx]
@@ -77,6 +77,13 @@ for r in range(2, ws.nrows):
         chunk = seq[m:m+4]
         if not chunk: break
         monthly_rate.append(round(sum(chunk)/len(chunk)*100, 1))
+
+    # ── 方案C：曾有任何13週期間出席率 ≥ 50% ────────────────────
+    ever_stable = any(
+        sum(seq[i:i+13]) >= 7
+        for i in range(max(1, len(seq)-12))
+    )
+    if not ever_stable: continue
 
     usable = min(total_weeks, 52)
     attend_rate = round(sum(seq[:usable]) / usable * 100, 1)
