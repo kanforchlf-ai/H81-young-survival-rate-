@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>81 青年區大學生 — 完整名單</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'PingFang TC','Microsoft JhengHei',sans-serif; background:#f4f6fa; color:#222; }
+  header { background:#1a2340; color:#fff; padding:28px 32px 20px; }
+  header h1 { font-size:1.5rem; font-weight:700; letter-spacing:.03em; }
+  header p { margin-top:6px; font-size:.88rem; opacity:.7; }
+  .container { max-width:1100px; margin:0 auto; padding:28px 20px 60px; }
+
+  .summary-bar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px; }
+  .summary-chip { display:flex; align-items:center; gap:8px; background:#fff; border-radius:8px; padding:10px 16px; box-shadow:0 1px 4px rgba(0,0,0,.08); font-size:.88rem; font-weight:600; cursor:pointer; border:2px solid transparent; transition:all .15s; }
+  .summary-chip.active { border-color:currentColor; }
+  .summary-chip .chip-n { font-size:1.4rem; font-weight:700; display:block; }
+  .chip-once    { color:#64748b; }
+  .chip-multi   { color:#d97706; }
+  .chip-stable  { color:#059669; }
+  .chip-occasional { color:#ea580c; }
+  .chip-lost    { color:#dc2626; }
+
+  .section { background:#fff; border-radius:10px; padding:24px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  .section-header { display:flex; align-items:baseline; gap:12px; margin-bottom:6px; }
+  .section h2 { font-size:1rem; font-weight:700; color:#1a2340; border-left:4px solid; padding-left:10px; }
+  .section-desc { font-size:.8rem; color:#888; margin-bottom:16px; padding-left:14px; }
+  .s-once h2      { border-color:#94a3b8; }
+  .s-multi h2     { border-color:#d97706; }
+  .s-stable h2    { border-color:#059669; }
+  .s-occasional h2{ border-color:#ea580c; }
+  .s-lost h2      { border-color:#dc2626; }
+
+  .badge { display:inline-block; font-size:.72rem; font-weight:600; padding:2px 7px; border-radius:4px; }
+  .badge-grade { background:#ede9fe; color:#5b21b6; }
+  .badge-year  { background:#f0f9ff; color:#0369a1; }
+  .badge-stable   { background:#d1fae5; color:#065f46; }
+  .badge-occasional { background:#fff7ed; color:#9a3412; border:1.5px solid #fb923c; }
+  .badge-lost     { background:#fee2e2; color:#991b1b; }
+
+  table { width:100%; border-collapse:collapse; font-size:.84rem; }
+  th { background:#f8fafc; font-weight:600; color:#555; text-align:left; padding:8px 10px; border-bottom:2px solid #e2e8f0; }
+  td { padding:7px 10px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
+  tr:hover td { background:#f8fafc; }
+
+  .filter-row { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .filter-btn { padding:4px 12px; border-radius:20px; border:1.5px solid #dde3f0; background:#fff; cursor:pointer; font-size:.8rem; color:#555; font-weight:600; }
+  .filter-btn.active { background:#1a2340; color:#fff; border-color:#1a2340; }
+
+  .stacked-bar { display:flex; height:20px; border-radius:5px; overflow:hidden; margin-bottom:20px; }
+  .stacked-seg { display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:700; color:#fff; min-width:0; transition:width .3s; }
+
+  @media (max-width:600px) { table { font-size:.78rem; } th,td { padding:6px 6px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>81 青年區大學生 — 完整名單</h1>
+  <p>追蹤期間曾出席過的所有大學生，依參與狀況分類（共 114 人）</p>
+</header>
+<div class="container">
+
+  <!-- 總覽色條 -->
+  <div class="stacked-bar" id="total-bar"></div>
+
+  <!-- 分類概覽 chips -->
+  <div class="summary-bar">
+    <div class="summary-chip chip-once active" onclick="scrollTo('s-once',this)">
+      <span class="chip-n">47</span>只來一次
+    </div>
+    <div class="summary-chip chip-multi" onclick="scrollTo('s-multi',this)">
+      <span class="chip-n">28</span>多次但未穩定
+    </div>
+    <div class="summary-chip chip-stable" onclick="scrollTo('s-stable',this)">
+      <span class="chip-n">13</span>Option C 仍穩定
+    </div>
+    <div class="summary-chip chip-occasional" onclick="scrollTo('s-occasional',this)">
+      <span class="chip-n">4</span>Option C 偶爾出席
+    </div>
+    <div class="summary-chip chip-lost" onclick="scrollTo('s-lost',this)">
+      <span class="chip-n">22</span>Option C 已流失
+    </div>
+  </div>
+
+  <!-- ① 只來一次 -->
+  <div class="section s-once" id="s-once">
+    <div class="section-header">
+      <h2>只來一次（47人）</h2>
+    </div>
+    <p class="section-desc">首次出席後從未再回來，未能建立出席習慣</p>
+    <div class="filter-row" id="f-once"></div>
+    <table>
+      <thead><tr><th>姓名</th><th>加入年</th><th>年級</th><th>追蹤週數</th></tr></thead>
+      <tbody id="t-once"></tbody>
+    </table>
+  </div>
+
+  <!-- ② 多次但未達 Option C -->
+  <div class="section s-multi" id="s-multi">
+    <div class="section-header">
+      <h2>多次出席但未達穩定條件（28人）</h2>
+    </div>
+    <p class="section-desc">曾多次出席，但在任意連續13週內從未達到7次以上（Option C 門檻）</p>
+    <div class="filter-row" id="f-multi"></div>
+    <table>
+      <thead><tr><th>姓名</th><th>加入年</th><th>年級</th><th>出席次數</th><th>出席率</th><th>追蹤週數</th></tr></thead>
+      <tbody id="t-multi"></tbody>
+    </table>
+  </div>
+
+  <!-- ③ Option C 仍穩定 -->
+  <div class="section s-stable" id="s-stable">
+    <div class="section-header">
+      <h2>Option C — 仍穩定（13人）</h2>
+    </div>
+    <p class="section-desc">曾達到穩定門檻，且近半年出席率 ≥ 50%，目前仍持續參與</p>
+    <table>
+      <thead><tr><th>姓名</th><th>年級</th><th>加入年</th><th>近半年出席率</th><th>歷史出席率</th></tr></thead>
+      <tbody id="t-stable"></tbody>
+    </table>
+  </div>
+
+  <!-- ④ Option C 偶爾出席 -->
+  <div class="section s-occasional" id="s-occasional">
+    <div class="section-header">
+      <h2>Option C — 偶爾出席（4人）</h2>
+    </div>
+    <p class="section-desc">曾穩定出席，近半年出席率 25–49%，出席不規律</p>
+    <table>
+      <thead><tr><th>姓名</th><th>年級</th><th>加入年</th><th>近半年出席率</th><th>歷史出席率</th></tr></thead>
+      <tbody id="t-occasional"></tbody>
+    </table>
+  </div>
+
+  <!-- ⑤ Option C 已流失 -->
+  <div class="section s-lost" id="s-lost">
+    <div class="section-header">
+      <h2>Option C — 已流失（22人）</h2>
+    </div>
+    <p class="section-desc">曾達到穩定門檻，但近半年出席率 &lt; 25%，幾乎不再出席</p>
+    <table>
+      <thead><tr><th>姓名</th><th>年級</th><th>加入年</th><th>近半年出席率</th><th>歷史出席率</th><th>流失週</th></tr></thead>
+      <tbody id="t-lost"></tbody>
+    </table>
+  </div>
+
+  <p style="font-size:.78rem;color:#aaa;text-align:center;margin-top:20px;">
+    ＊ 外地唸書（謝全真、王晨薰、林承楷）及無年級資料（9人）之 Option C 成員未列入本頁分析
+  </p>
+
+</div>
+
+<script>
+const ONCE      = [{"name": "李哲宇", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大四", "zone": "青年二區"}, {"name": "李威誼", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "馮郁凱", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大四", "zone": "青年二區"}, {"name": "楊世賢", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "楊佳勳", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "蔡秉軒", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大三", "zone": "青年二區"}, {"name": "黃得恩", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大三", "zone": "青年二區"}, {"name": "謝佩霓", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大二", "zone": "青年二區"}, {"name": "阮婕容", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "高橋陽奈多", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "廖津婕", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "彭暄", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "柯維恩", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "楊莘瑜", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "陳玟萱", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "游均緯", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年三區"}, {"name": "蔡喻安", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年三區"}, {"name": "廖庭苡", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "思綺", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "林承峰", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "梁巧意", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "楊鈺婕", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "楊靚林", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "蔡宛書", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "陳冠怡", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "陳茂榮", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大三", "zone": "青年二區"}, {"name": "馨儀", "join_year": "2023", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "廖岑蓁", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大二", "zone": "青年三區"}, {"name": "駱昱緯", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "林庭萱", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大四", "zone": "青年三區"}, {"name": "洪琪雅", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年三區"}, {"name": "趙婕凱", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大三", "zone": "青年三區"}, {"name": "李語雷", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "林沛穎", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "邱絃蘭", "join_year": "2024", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "李思霖", "join_year": "2025", "attend_count": 1, "attend_rate": 2.4, "total_weeks": 42, "grade": "", "zone": "青年二區"}, {"name": "葉姵維", "join_year": "2025", "attend_count": 1, "attend_rate": 3.1, "total_weeks": 32, "grade": "", "zone": "青年二區"}, {"name": "王璇", "join_year": "2025", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "大一", "zone": "青年二區"}, {"name": "吳珮琪", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "張婉薇", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "張昀暄", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "李忻霓", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "林孟婷", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "簡禎儀", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "大一", "zone": "青年二區"}, {"name": "羅宜琳", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "賴子苙", "join_year": "2025", "attend_count": 1, "attend_rate": 1.9, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "陳亭樺", "join_year": "2025", "attend_count": 1, "attend_rate": 4.3, "total_weeks": 23, "grade": "", "zone": "青年二區"}];
+const MULTI     = [{"name": "楊宜潔", "join_year": "2024", "attend_count": 13, "attend_rate": 25.0, "total_weeks": 52, "grade": "大二", "zone": "青年三區"}, {"name": "沈書泓", "join_year": "2023", "attend_count": 12, "attend_rate": 23.1, "total_weeks": 52, "grade": "大四", "zone": "青年三區"}, {"name": "李育宣", "join_year": "2024", "attend_count": 9, "attend_rate": 17.3, "total_weeks": 52, "grade": "", "zone": "青年三區"}, {"name": "劉寶婷", "join_year": "2025", "attend_count": 7, "attend_rate": 20.6, "total_weeks": 34, "grade": "大一", "zone": "青年二區"}, {"name": "潘盈瑩", "join_year": "2023", "attend_count": 6, "attend_rate": 11.5, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "李華娟", "join_year": "2023", "attend_count": 6, "attend_rate": 11.5, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "莊凱閎", "join_year": "2024", "attend_count": 5, "attend_rate": 9.6, "total_weeks": 52, "grade": "大二", "zone": "青年一區"}, {"name": "黃沛盈 Sunnie", "join_year": "2024", "attend_count": 5, "attend_rate": 9.6, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "嚴佳琪", "join_year": "2023", "attend_count": 5, "attend_rate": 9.6, "total_weeks": 52, "grade": "大二", "zone": "青年二區"}, {"name": "賴逸儒", "join_year": "2023", "attend_count": 4, "attend_rate": 7.7, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "胡佩茵", "join_year": "2023", "attend_count": 4, "attend_rate": 7.7, "total_weeks": 52, "grade": "大一", "zone": "青年三區"}, {"name": "李語宸", "join_year": "2023", "attend_count": 4, "attend_rate": 7.7, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "吳美錞", "join_year": "2023", "attend_count": 4, "attend_rate": 7.7, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "吳明玹", "join_year": "2024", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "大二", "zone": "青年二區"}, {"name": "吳凱翔", "join_year": "2023", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "", "zone": "青年三區"}, {"name": "王慈慧", "join_year": "2024", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "大一", "zone": "青年二區"}, {"name": "林品君", "join_year": "2023", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "劉宣均", "join_year": "2024", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "大三", "zone": "青年三區"}, {"name": "林凱翔", "join_year": "2023", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "大二", "zone": "青年三區"}, {"name": "吳冠儀", "join_year": "2024", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "", "zone": "青年二區"}, {"name": "高梓瑄", "join_year": "2023", "attend_count": 3, "attend_rate": 5.8, "total_weeks": 52, "grade": "大三", "zone": "青年二區"}, {"name": "張篤正", "join_year": "2023", "attend_count": 2, "attend_rate": 3.8, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "林宗群", "join_year": "2025", "attend_count": 2, "attend_rate": 4.8, "total_weeks": 42, "grade": "大四", "zone": "青年二區"}, {"name": "陳姵瑾", "join_year": "2025", "attend_count": 2, "attend_rate": 6.5, "total_weeks": 31, "grade": "", "zone": "青年一區"}, {"name": "呂孟璇", "join_year": "2023", "attend_count": 2, "attend_rate": 3.8, "total_weeks": 52, "grade": "", "zone": "青年一區"}, {"name": "蔡宜榛", "join_year": "2023", "attend_count": 2, "attend_rate": 3.8, "total_weeks": 52, "grade": "大四", "zone": "青年三區"}, {"name": "林宇茹", "join_year": "2025", "attend_count": 2, "attend_rate": 8.7, "total_weeks": 23, "grade": "", "zone": "青年二區"}, {"name": "柯盈安", "join_year": "2024", "attend_count": 2, "attend_rate": 3.8, "total_weeks": 52, "grade": "", "zone": "青年二區"}];
+const STABLE    = [{"name": "陳柏勳", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 88.5, "dropout_week": null, "total_weeks": 213, "grade": "大二"}, {"name": "史以凡", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 88.5, "dropout_week": null, "total_weeks": 191, "grade": "大四"}, {"name": "董宜睿", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 88.5, "dropout_week": null, "total_weeks": 213, "grade": "大三"}, {"name": "陳昱宏", "join_year": "2022", "attend_rate": 98.1, "recent_rate": 84.6, "dropout_week": null, "total_weeks": 213, "grade": "大一"}, {"name": "趙培媛", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 84.6, "dropout_week": null, "total_weeks": 213, "grade": "大一"}, {"name": "吳雨桐", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 80.8, "dropout_week": 209, "total_weeks": 213, "grade": "大三"}, {"name": "陳聿新", "join_year": "2022", "attend_rate": 90.4, "recent_rate": 80.8, "dropout_week": 209, "total_weeks": 213, "grade": "大三"}, {"name": "王冠婷", "join_year": "2022", "attend_rate": 69.2, "recent_rate": 76.9, "dropout_week": 1, "total_weeks": 211, "grade": "大三"}, {"name": "張虔立", "join_year": "2022", "attend_rate": 96.2, "recent_rate": 69.2, "dropout_week": null, "total_weeks": 213, "grade": "大一"}, {"name": "王冠傑", "join_year": "2025", "attend_rate": 76.5, "recent_rate": 69.2, "dropout_week": null, "total_weeks": 34, "grade": "大四"}, {"name": "高語謙", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 69.2, "dropout_week": 209, "total_weeks": 213, "grade": "大三"}, {"name": "蔡宜倢", "join_year": "2022", "attend_rate": 94.2, "recent_rate": 61.5, "dropout_week": 208, "total_weeks": 213, "grade": "大二"}, {"name": "楊葶萱", "join_year": "2022", "attend_rate": 92.3, "recent_rate": 53.8, "dropout_week": 208, "total_weeks": 213, "grade": "大一"}];
+const OCCASIONAL= [{"name": "江至美", "join_year": "2022", "attend_rate": 96.2, "recent_rate": 38.5, "dropout_week": 93, "total_weeks": 213, "grade": "大三"}, {"name": "高聖華", "join_year": "2022", "attend_rate": 38.5, "recent_rate": 34.6, "dropout_week": 20, "total_weeks": 190, "grade": "大四"}, {"name": "王麒竣", "join_year": "2022", "attend_rate": 88.5, "recent_rate": 30.8, "dropout_week": 125, "total_weeks": 213, "grade": "大四"}, {"name": "高瑞謙", "join_year": "2022", "attend_rate": 78.8, "recent_rate": 30.8, "dropout_week": 93, "total_weeks": 213, "grade": "大四"}];
+const LOST      = [{"name": "陳佳莉", "join_year": "2022", "attend_rate": 1.9, "recent_rate": 15.4, "dropout_week": 1, "total_weeks": 211, "grade": "大四"}, {"name": "徐靖城", "join_year": "2022", "attend_rate": 98.1, "recent_rate": 11.5, "dropout_week": 188, "total_weeks": 213, "grade": "大三"}, {"name": "何語心", "join_year": "2022", "attend_rate": 96.2, "recent_rate": 7.7, "dropout_week": 161, "total_weeks": 211, "grade": "大一"}, {"name": "劉庭伃", "join_year": "2022", "attend_rate": 5.8, "recent_rate": 7.7, "dropout_week": 1, "total_weeks": 199, "grade": "大三"}, {"name": "呂全恩", "join_year": "2022", "attend_rate": 67.3, "recent_rate": 7.7, "dropout_week": 59, "total_weeks": 197, "grade": "大四"}, {"name": "陳實頡", "join_year": "2022", "attend_rate": 38.5, "recent_rate": 7.7, "dropout_week": 16, "total_weeks": 213, "grade": "大二"}, {"name": "康欣柔", "join_year": "2024", "attend_rate": 23.1, "recent_rate": 7.7, "dropout_week": 1, "total_weeks": 72, "grade": "大三"}, {"name": "江漢翔", "join_year": "2022", "attend_rate": 88.5, "recent_rate": 3.8, "dropout_week": 170, "total_weeks": 213, "grade": "大一"}, {"name": "裴廷瑋", "join_year": "2022", "attend_rate": 98.1, "recent_rate": 0.0, "dropout_week": 83, "total_weeks": 213, "grade": "大三"}, {"name": "江漢維", "join_year": "2022", "attend_rate": 86.5, "recent_rate": 0.0, "dropout_week": 170, "total_weeks": 213, "grade": "大一"}, {"name": "林沛均", "join_year": "2022", "attend_rate": 44.2, "recent_rate": 0.0, "dropout_week": 12, "total_weeks": 213, "grade": "大四"}, {"name": "郭家馨", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 0.0, "dropout_week": 92, "total_weeks": 213, "grade": "大二"}, {"name": "周品瑜", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 0.0, "dropout_week": 112, "total_weeks": 213, "grade": "大四"}, {"name": "石久安", "join_year": "2022", "attend_rate": 28.8, "recent_rate": 0.0, "dropout_week": 18, "total_weeks": 205, "grade": "大四"}, {"name": "管錫廷", "join_year": "2022", "attend_rate": 100.0, "recent_rate": 0.0, "dropout_week": 151, "total_weeks": 213, "grade": "大三"}, {"name": "藍聿昕", "join_year": "2022", "attend_rate": 42.3, "recent_rate": 0.0, "dropout_week": 10, "total_weeks": 213, "grade": "大四"}, {"name": "劉書辰", "join_year": "2023", "attend_rate": 23.1, "recent_rate": 0.0, "dropout_week": 16, "total_weeks": 141, "grade": "大三"}, {"name": "高釩予", "join_year": "2022", "attend_rate": 65.4, "recent_rate": 0.0, "dropout_week": 63, "total_weeks": 213, "grade": "大三"}, {"name": "張瑀倢", "join_year": "2024", "attend_rate": 26.9, "recent_rate": 0.0, "dropout_week": 18, "total_weeks": 88, "grade": "大三"}, {"name": "謝思婷", "join_year": "2022", "attend_rate": 42.3, "recent_rate": 0.0, "dropout_week": 4, "total_weeks": 207, "grade": "大一"}, {"name": "程奕嘉", "join_year": "2022", "attend_rate": 26.9, "recent_rate": 0.0, "dropout_week": 2, "total_weeks": 192, "grade": "大四"}, {"name": "陳信", "join_year": "2024", "attend_rate": 25.0, "recent_rate": 0.0, "dropout_week": 9, "total_weeks": 105, "grade": "大二"}];
+
+// 總覽色條
+(function() {
+  const segs = [
+    { n:47, color:'#94a3b8', label:'只來一次' },
+    { n:28, color:'#d97706', label:'多次未穩定' },
+    { n:13, color:'#059669', label:'仍穩定' },
+    { n:4,  color:'#ea580c', label:'偶爾' },
+    { n:22, color:'#dc2626', label:'已流失' },
+  ];
+  const total = segs.reduce((a,s)=>a+s.n, 0);
+  const bar = document.getElementById('total-bar');
+  segs.forEach(s => {
+    const d = document.createElement('div');
+    const pct = (s.n/total*100).toFixed(1);
+    d.className = 'stacked-seg';
+    d.style.cssText = `width:${pct}%;background:${s.color};`;
+    d.title = `${s.label} ${s.n}人 (${pct}%)`;
+    if (s.n >= 8) d.textContent = s.n;
+    bar.appendChild(d);
+  });
+})();
+
+function scrollTo(id, btn) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── 只來一次 ──
+function buildYearFilter(containerId, data, renderFn) {
+  const years = [...new Set(data.map(m=>m.join_year||m['加入年']||''))].sort();
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  let active = 'all';
+  [['all','全部'],...years.map(y=>[y,y+'年'])].forEach(([v,l])=>{
+    const b = document.createElement('button');
+    b.className = 'filter-btn' + (v==='all'?' active':'');
+    b.textContent = l + (v==='all' ? ` (${data.length}人)` : ` (${data.filter(m=>(m.join_year||m['加入年']||'')==v).length}人)`);
+    b.onclick = () => {
+      wrap.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      active = v;
+      renderFn(v==='all' ? data : data.filter(m=>(m.join_year||m['加入年']||'')==v));
+    };
+    wrap.appendChild(b);
+  });
+  renderFn(data);
+}
+
+function renderOnce(list) {
+  document.getElementById('t-once').innerHTML = list.map(m => `
+    <tr>
+      <td><strong>${m.name}</strong></td>
+      <td><span class="badge badge-year">${m.join_year||'—'}</span></td>
+      <td>${m.grade ? `<span class="badge badge-grade">${m.grade}</span>` : '<span style="color:#ccc">—</span>'}</td>
+      <td style="color:#888">${m.total_weeks} 週</td>
+    </tr>`).join('');
+}
+
+function renderMulti(list) {
+  document.getElementById('t-multi').innerHTML = list.map(m => `
+    <tr>
+      <td><strong>${m.name}</strong></td>
+      <td><span class="badge badge-year">${m.join_year||'—'}</span></td>
+      <td>${m.grade ? `<span class="badge badge-grade">${m.grade}</span>` : '<span style="color:#ccc">—</span>'}</td>
+      <td>${m.attend_count} 次</td>
+      <td>${m.attend_rate}%</td>
+      <td style="color:#888">${m.total_weeks} 週</td>
+    </tr>`).join('');
+}
+
+buildYearFilter('f-once', ONCE, renderOnce);
+buildYearFilter('f-multi', MULTI, renderMulti);
+
+// ── Option C tables ──
+function renderOptionC(tbodyId, list, showDropout) {
+  document.getElementById(tbodyId).innerHTML = list.map(m => {
+    const rr = m.recent_rate;
+    const rrColor = rr >= 50 ? '#059669' : (rr >= 25 ? '#ea580c' : '#dc2626');
+    const dropoutCell = showDropout
+      ? `<td>${m.dropout_week ? `第${m.dropout_week}週` : '<span style="color:#059669">從未流失</span>'}</td>`
+      : '';
+    return `<tr>
+      <td><strong>${m.name}</strong></td>
+      <td>${m.grade ? `<span class="badge badge-grade">${m.grade}</span>` : '<span style="color:#ccc">—</span>'}</td>
+      <td><span class="badge badge-year">${m.join_year}</span></td>
+      <td><strong style="color:${rrColor}">${rr}%</strong></td>
+      <td style="color:#888">${m.attend_rate}%</td>
+      ${dropoutCell}
+    </tr>`;
+  }).join('');
+}
+
+renderOptionC('t-stable',    STABLE,    false);
+renderOptionC('t-occasional',OCCASIONAL,false);
+renderOptionC('t-lost',      LOST,      true);
+</script>
+</body>
+</html>
