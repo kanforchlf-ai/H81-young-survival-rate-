@@ -34,11 +34,14 @@
   .hm-scroll { overflow-x:auto; }
   table.hm { border-collapse:collapse; white-space:nowrap; }
   table.hm .yr-row th { font-size:.68rem; color:#888; font-weight:700; padding:0 0 1px 2px; text-align:left; }
+  table.hm .yr-row th:first-child { position:sticky; left:0; z-index:3; background:#fff; }
   table.hm .mo-row th.mo-label { font-size:.62rem; color:#bbb; padding:0 0 2px 1px; text-align:center; }
-  table.hm .mo-row th.mo-empty { }
-  table.hm td.nm { padding:2px 8px 2px 4px; font-size:.82rem; font-weight:600; }
-  table.hm td.zn { padding:2px 6px 2px 0; font-size:.7rem; color:#999; }
-  table.hm td.gr { padding:2px 6px 2px 0; font-size:.68rem; color:#6366f1; font-weight:600; }
+  table.hm .mo-row th.mo-empty { position:sticky; left:0; z-index:3; background:#fff; }
+  table.hm td.nm { padding:2px 8px 2px 4px; font-size:.82rem; font-weight:600; position:sticky; left:0; z-index:2; background:inherit; }
+  table.hm td.zn { padding:2px 4px 2px 0; font-size:.7rem; color:#999; position:sticky; left:72px; z-index:2; background:inherit; }
+  table.hm td.gr { padding:2px 4px 2px 0; font-size:.68rem; color:#6366f1; font-weight:600; position:sticky; left:108px; z-index:2; background:inherit; }
+  table.hm tr { background:#fff; }
+  table.hm tr:hover td { background:#f0f4ff; }
   table.hm td.cl {
     width:18px; min-width:18px; height:24px;
     border:1.5px solid rgba(255,255,255,.5);
