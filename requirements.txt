@@ -1,0 +1,18 @@
+# --- 核心網頁自動化 ---
+selenium
+webdriver-manager
+
+# --- 數據處理與 API 請求 ---
+requests
+pandas
+openpyxl
+
+# --- AI 驗證碼識別 ---
+ddddocr
+onnxruntime
+
+# --- 影像處理 (鎖定版本以相容 ddddocr) ---
+Pillow<10.0.0
+
+# --- 打包工具 ---
+pyinstaller
